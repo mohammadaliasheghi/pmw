@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: web
+  h2:
+    console:
+      enabled: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  sql:
+    init:
+      continue-on-error: true
+
+  #todo encoding on web server
+  datasource:
+    url: jdbc:postgresql://localhost:5432/platform
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+server:
+  port: 7881
+  error:
+    include-message: always
+
+security:
+  password:
+    secret-key: ENC(tZmy22OyWpLFjfXkcQs/uHnjgtXBx5JMHjCkMRMZZFXAk9m9W6IG8Jdl4oCCUfe73fnmuv5FH3WP77368VYpZQ==)
+    encode-key: ENC(Rp02msNwKCOvaVMGM1h6pIO0UK6ce0aDbIfbjI7otBKAATYLJnOqaVLd7RHBYw6Ivr52TkgCCS/RJRKyjP3B6Q==)
+  algorithm:
+    encode-alg: HmacSHA256
+  token:
+    expiration-time: 600000
