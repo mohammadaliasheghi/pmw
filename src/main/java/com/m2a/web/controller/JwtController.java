@@ -1,7 +1,7 @@
 package com.m2a.web.controller;
 
 import com.m2a.common.config.Constant;
-import com.m2a.web.config.JwtConfig;
+import com.m2a.web.config.JwtTokenProvider;
 import com.m2a.web.model.SecurityInformationModel;
 import com.m2a.web.service.SecurityInformationService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,11 +25,11 @@ public class JwtController {
 
     private final AuthenticationManager authenticationManager;
     private final SecurityInformationService securityInformationService;
-    private JwtConfig jwtConfig;
+    private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public void setJwtConfig(JwtConfig jwtConfig) {
-        this.jwtConfig = jwtConfig;
+    public void setJwtTokenProvider(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @PostMapping(value = "/token", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -43,7 +43,7 @@ public class JwtController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        String token = jwtConfig.generateToken(model.getUsername(), request);
+        String token = jwtTokenProvider.generateToken(model.getUsername(), request);
         response.addHeader(Constant.AUTHORIZATION, token);
         return new ResponseEntity<>(token, HttpStatus.OK);
     }

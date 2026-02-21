@@ -28,7 +28,7 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private FilterConfig filterConfig;
+    private AuthenticationFilter authenticationFilter;
     private SecurityInformationService securityInformationService;
     private PasswordEncoder passwordEncoder;
 
@@ -38,8 +38,8 @@ public class SecurityConfig {
     }
 
     @Autowired
-    public void setFilterConfig(FilterConfig filterConfig) {
-        this.filterConfig = filterConfig;
+    public void setFilterConfig(AuthenticationFilter authenticationFilter) {
+        this.authenticationFilter = authenticationFilter;
     }
 
     @Autowired
@@ -59,7 +59,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .addFilterBefore(filterConfig, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .build();
     }
