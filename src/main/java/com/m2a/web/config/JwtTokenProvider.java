@@ -3,12 +3,13 @@ package com.m2a.web.config;
 import com.m2a.common.security.HttpUtil;
 import com.m2a.common.security.SecurityUtil;
 import com.m2a.web.entity.SecurityInformationEntity;
-import com.m2a.web.service.SecurityInformationService;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -22,20 +23,23 @@ public class JwtTokenProvider {
 
     private final String secretKey;
     private final long expirationTime;
-    private final SecurityInformationService securityInformationService;
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    public void setUserDetailsService(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     public JwtTokenProvider(
             @Value("${security.password.secret-key}") String secretKey,
-            @Value("${security.token.expiration-time}") long expirationTime,
-            SecurityInformationService securityInformationService) {
+            @Value("${security.token.expiration-time}") long expirationTime) {
         this.secretKey = secretKey;
         this.expirationTime = expirationTime;
-        this.securityInformationService = securityInformationService;
     }
 
     public String generateToken(String username, HttpServletRequest request) {
         try {
-            SecurityInformationEntity user = securityInformationService.loadUserByUsername(username);
+            SecurityInformationEntity user = (SecurityInformationEntity) userDetailsService.loadUserByUsername(username);
 
             Map<String, Object> claims = new HashMap<>();
             claims.put("id", user.getId());

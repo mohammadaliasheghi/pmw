@@ -1,20 +1,20 @@
 package com.m2a.web.config;
 
 import com.m2a.common.config.Constant;
-import com.m2a.web.service.SecurityInformationService;
+import com.m2a.web.repository.SecurityInformationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -29,22 +29,16 @@ import java.util.List;
 public class SecurityConfig {
 
     private AuthenticationFilter authenticationFilter;
-    private SecurityInformationService securityInformationService;
-    private PasswordEncoder passwordEncoder;
+    private SecurityInformationRepository securityInformationRepository;
 
     @Autowired
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
+    public void setSecurityInformationRepository(SecurityInformationRepository securityInformationRepository) {
+        this.securityInformationRepository = securityInformationRepository;
     }
 
     @Autowired
     public void setFilterConfig(AuthenticationFilter authenticationFilter) {
         this.authenticationFilter = authenticationFilter;
-    }
-
-    @Autowired
-    public void setSecurityInformationService(SecurityInformationService securityInformationService) {
-        this.securityInformationService = securityInformationService;
     }
 
     @Bean
@@ -78,10 +72,14 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(securityInformationService);
-        authProvider.setPasswordEncoder(passwordEncoder);
-        return new ProviderManager(authProvider);
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() throws UsernameNotFoundException {
+        return username -> securityInformationRepository.findUsersByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

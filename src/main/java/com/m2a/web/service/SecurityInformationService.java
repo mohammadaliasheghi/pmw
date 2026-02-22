@@ -7,33 +7,19 @@ import com.m2a.web.mapper.SecurityInformationMapper;
 import com.m2a.web.model.SecurityInformationModel;
 import com.m2a.web.repository.SecurityInformationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-//todo feature : must be implement update username or password
 @Service
-public class SecurityInformationService implements UserDetailsService {
+public class SecurityInformationService {
 
     private SecurityInformationRepository repository;
     private AuthoritiesService authoritiesService;
     private PasswordEncoder passwordEncoder;
     private PasswordManagerService passwordManagerService;
-
-    @Override
-    public SecurityInformationEntity loadUserByUsername(String username) throws UsernameNotFoundException {
-        try {
-            return repository.findUsersByUsername(username)
-                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        } catch (IncorrectResultSizeDataAccessException ex) {
-            throw new UsernameNotFoundException("User not found with username: " + username, ex);
-        }
-    }
 
     @Transactional(rollbackFor = Exception.class)
     public String create(SecurityInformationModel model) {
