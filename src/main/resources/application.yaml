@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: dev #(prod/dev)
   main:
     allow-circular-references: true
   application:
@@ -13,7 +15,6 @@ spring:
     init:
       continue-on-error: true
 
-  #todo encoding on web server
   datasource:
     url: jdbc:postgresql://localhost:5432/platform
     username: postgres
@@ -39,3 +40,8 @@ security:
     encode-alg: HmacSHA256
   token:
     expiration-time: 600000
+  is-admin-creator: false
+
+jasypt:
+  encryptor:
+    algorithm: PBEWITHHMACSHA512ANDAES_256

@@ -8,12 +8,15 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
+import javax.validation.constraints.NotNull;
+
 @Entity
 @Getter
 @Setter
 @Table(name = "role_information")
 public class RoleInformationEntity extends BasePO implements GrantedAuthority {
 
+    @NotNull
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 

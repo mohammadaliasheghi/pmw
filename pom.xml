@@ -10,31 +10,9 @@
     </parent>
     <groupId>com.m2a</groupId>
     <artifactId>web</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>web</name>
     <description>web</description>
-    <url>https://www.telegram.com/dev_password_manager_bot</url>
-    <licenses>
-        <license>
-            <name>Apache License, Version 2.0</name>
-            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-    <developers>
-        <developer>
-            <name>mohammad ali</name>
-            <email>mohammad.ali.asheghi@gmail.com</email>
-            <organization>non</organization>
-            <organizationUrl>non</organizationUrl>
-        </developer>
-    </developers>
-    <scm>
-        <connection>scm:git:git://github.com/mohammadaliasheghi/PasswordManagerBot.git</connection>
-        <developerConnection>scm:git:ssh://github.com/mohammadaliasheghi/PasswordManagerBot.git</developerConnection>
-        <tag>v0.0.1</tag>
-        <url>https://github.com/mohammadaliasheghi/PasswordManagerBot</url>
-    </scm>
     <properties>
         <java.version>17</java.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
@@ -87,12 +65,6 @@
             <artifactId>common</artifactId>
             <version>1.0.0</version>
             <scope>compile</scope>
-        </dependency>
-        <!-- SpringDoc OpenAPI (Swagger) -->
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.3.0</version>
         </dependency>
     </dependencies>
 

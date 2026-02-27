@@ -7,6 +7,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
+
 @Entity
 @Getter
 @Setter
@@ -19,6 +21,7 @@ public class AuthoritiesEntity extends BasePO {
     @OneToOne(fetch = FetchType.LAZY)
     private SecurityInformationEntity securityInformation;
 
+    @NotNull
     @Column(name = "security_information_id", nullable = false)
     private Long securityInformationId;
 
@@ -28,6 +31,7 @@ public class AuthoritiesEntity extends BasePO {
     @OneToOne(fetch = FetchType.LAZY)
     private RoleInformationEntity roleInformation;
 
+    @NotNull
     @Column(name = "role_information_id", nullable = false)
     private Long roleInformationId;
 }

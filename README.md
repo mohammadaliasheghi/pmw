@@ -1,6 +1,6 @@
-# Password Manager Web Application
+# Auth Guard Application
 
-A secure and robust password management web application built with Spring Boot, featuring JWT-based authentication and PostgreSQL database integration. This application allows users to securely store, manage, and access their passwords with enterprise-grade security.
+A secure and robust Auth Guard application built with Spring Boot, featuring JWT-based authentication and PostgreSQL database integration. This application allows users to securely store, manage, and access their passwords with enterprise-grade security.
 
 ## Features
 
@@ -31,8 +31,8 @@ A secure and robust password management web application built with Spring Boot, 
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/password-manager.git
-cd password-manager
+git clone https://github.com/yourusername/AuthGuard.git
+cd AuthGuard
 ```
 
 ### 2. Configure Database
@@ -163,7 +163,7 @@ mvn clean package
 
 Run the production JAR:
 ```bash
-java -jar target/password-manager-*.jar
+java -jar target/auth-guard-*.jar
 ```
 
 ## Contributing
@@ -182,4 +182,4 @@ java -jar target/password-manager-*.jar
 
 ---
 
-**Note**: This application is for educational and personal use. Always follow security best practices when deploying password management systems in production environments.
+**Note**: This application is for educational and personal use. Always follow security best practices when deploying Auth Guard systems in production environments.

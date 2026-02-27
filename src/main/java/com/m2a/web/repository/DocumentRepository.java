@@ -1,10 +1,10 @@
 package com.m2a.web.repository;
 
 import com.m2a.common.repository.AbstractDAO;
-import com.m2a.web.entity.AuthoritiesEntity;
+import com.m2a.web.entity.DocumentEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AuthoritiesRepository extends AbstractDAO<AuthoritiesEntity> {
+public interface DocumentRepository extends AbstractDAO<DocumentEntity> {
 
 }

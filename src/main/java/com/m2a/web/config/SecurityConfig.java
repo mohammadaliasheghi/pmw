@@ -3,6 +3,7 @@ package com.m2a.web.config;
 import com.m2a.common.config.Constant;
 import com.m2a.web.repository.SecurityInformationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -28,6 +29,9 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    @Value("${security.is-admin-creator}")
+    private Boolean isAdminCreator;
+
     private AuthenticationFilter authenticationFilter;
     private SecurityInformationRepository securityInformationRepository;
 
@@ -45,11 +49,16 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS).permitAll()
-                        .requestMatchers("/api/**").authenticated()
-                        .anyRequest().permitAll()
-                )
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers(HttpMethod.OPTIONS).permitAll();
+                    if (isAdminCreator) {
+                        auth.requestMatchers("/api/**").authenticated();
+                    } else {
+                        auth.requestMatchers("/api/sec-info/create").permitAll();
+                        auth.requestMatchers("/api/**").authenticated();
+                    }
+                    auth.anyRequest().permitAll();
+                })
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )

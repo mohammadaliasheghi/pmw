@@ -19,7 +19,6 @@ public class SecurityInformationService {
     private SecurityInformationRepository repository;
     private AuthoritiesService authoritiesService;
     private PasswordEncoder passwordEncoder;
-    private PasswordManagerService passwordManagerService;
 
     @Transactional(rollbackFor = Exception.class)
     public String create(SecurityInformationModel model) {
@@ -53,7 +52,6 @@ public class SecurityInformationService {
     @Transactional(rollbackFor = Exception.class)
     public String delete(Long id) {
         try {
-            passwordManagerService.deleteList(id);
             authoritiesService.deleteBySecurityInformationId(id);
             repository.deleteById(id);
             return ResourceBundle.getMessageByKey("YourAccountHasBeenDeleted");
@@ -76,10 +74,5 @@ public class SecurityInformationService {
     @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
-    }
-
-    @Autowired
-    public void setPasswordManagerService(PasswordManagerService passwordManagerService) {
-        this.passwordManagerService = passwordManagerService;
     }
 }

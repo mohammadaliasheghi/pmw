@@ -6,11 +6,13 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class PasswordManagerModel extends BaseModel {
-    private String title;
-    private String username = "-";
-    private String password = "-";
-    private String description = "-";
+public class ChatHistoryModel extends BaseModel {
+
+    private String prompt;
+    private String response;
+    private Long chatId;
+    private DocumentModel document;
+    private Long documentId;
     private SecurityInformationModel securityInformation;
     private Long securityInformationId;
 }

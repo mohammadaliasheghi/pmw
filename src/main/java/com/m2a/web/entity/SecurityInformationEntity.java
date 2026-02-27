@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
@@ -22,10 +23,13 @@ import java.util.Set;
 @Table(name = "security_information")
 public class SecurityInformationEntity extends BasePO implements Serializable, UserDetails {
 
+    @NotNull
     @Column(name = "username", unique = true, nullable = false)
     private String username;
+    @NotNull
     @Column(name = "password", nullable = false)
     private String password;
+    @NotNull
     @Column(name = "enabled")
     private boolean enabled;
 

@@ -1,9 +1,9 @@
 package com.m2a.web.controller;
 
 import com.m2a.common.config.Constant;
+import com.m2a.common.util.ResponseUtil;
 import com.m2a.web.config.JwtTokenProvider;
 import com.m2a.web.model.SecurityInformationModel;
-import com.m2a.web.service.SecurityInformationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class JwtController {
 
     private final AuthenticationManager authenticationManager;
-    private final SecurityInformationService securityInformationService;
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
@@ -37,7 +36,7 @@ public class JwtController {
                                       HttpServletResponse response,
                                       HttpServletRequest request) {
         if (model == null || model.getUsername() == null || model.getPassword() == null)
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseUtil.badRequest("invalid security information");
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(model.getUsername(), model.getPassword()));
         } catch (Exception e) {
@@ -45,11 +44,6 @@ public class JwtController {
         }
         String token = jwtTokenProvider.generateToken(model.getUsername(), request);
         response.addHeader(Constant.AUTHORIZATION, token);
-        return new ResponseEntity<>(token, HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> create(@RequestBody SecurityInformationModel model) {
-        return new ResponseEntity<>(securityInformationService.create(model), HttpStatus.CREATED);
+        return ResponseUtil.success("Token Generated", token);
     }
 }
