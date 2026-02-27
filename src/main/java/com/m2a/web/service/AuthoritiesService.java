@@ -22,12 +22,4 @@ public class AuthoritiesService {
         AuthoritiesEntity entity = AuthoritiesMapper.get().modelToEntity(model);
         repository.save(entity);
     }
-
-    @Transactional(rollbackFor = Exception.class)
-    public void deleteBySecurityInformationId(Long id) {
-        AuthoritiesEntity entity = repository.findById(id)
-                .orElse(new AuthoritiesEntity());
-        if (entity.getId() == null) return;
-        repository.deleteById(entity.getId());
-    }
 }

@@ -21,6 +21,8 @@ import java.util.Map;
 @Component
 public class JwtTokenProvider {
 
+    private static final String BEARER_PREFIX = "Bearer ";
+
     private final String secretKey;
     private final long expirationTime;
     private UserDetailsService userDetailsService;
@@ -51,7 +53,7 @@ public class JwtTokenProvider {
 
             long now = System.currentTimeMillis();
 
-            return Jwts.builder()
+            String compact = Jwts.builder()
                     .setClaims(claims)
                     .setSubject(username)
                     .setIssuedAt(new Date(now))
@@ -59,6 +61,7 @@ public class JwtTokenProvider {
                     .signWith(SignatureAlgorithm.HS512, secretKey)
                     .compact();
 
+            return BEARER_PREFIX + compact;
         } catch (Exception e) {
             log.error("Error generating token for user: {}", username, e);
             throw new JwtGenerationException("Failed to generate token", e);

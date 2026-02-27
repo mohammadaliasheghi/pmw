@@ -6,6 +6,7 @@ import com.m2a.web.enums.RoleEnum;
 import com.m2a.web.mapper.SecurityInformationMapper;
 import com.m2a.web.model.SecurityInformationModel;
 import com.m2a.web.repository.SecurityInformationRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -51,14 +52,10 @@ public class SecurityInformationService {
 
     @Transactional(rollbackFor = Exception.class)
     public String delete(Long id) {
-        try {
-            authoritiesService.deleteBySecurityInformationId(id);
-            repository.deleteById(id);
-            return ResourceBundle.getMessageByKey("YourAccountHasBeenDeleted");
-        } catch (Exception e) {
-            e.fillInStackTrace();
-            return ResourceBundle.getMessageByKey("ServerError");
-        }
+        SecurityInformationEntity entity = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Security information not found"));
+        repository.delete(entity);
+        return ResourceBundle.getMessageByKey("YourAccountHasBeenDeleted");
     }
 
     @Autowired

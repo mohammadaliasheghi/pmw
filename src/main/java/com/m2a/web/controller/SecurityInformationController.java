@@ -20,7 +20,7 @@ public class SecurityInformationController {
         return ResponseUtil.created(securityInformationService.create(model));
     }
 
-    @DeleteMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> delete(@PathVariable Long id) {
         return ResponseUtil.success(securityInformationService.delete(id));
     }
